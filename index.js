@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 // Middleware to enable CORS
 app.use(cors());
 
-app.get('/token', async (req, res) => {
+app.get('/users', async (req, res) => {
   try {
     const response = await axios.post(process.env.TOKEN_URL, new URLSearchParams({
       grant_type: 'client_credentials',
