@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const routes = require("../src/routes/index");
 
 dotenv.config();
 
@@ -10,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware to enable CORS
 app.use(cors());
-
+app.use("/", routes);
 app.get('/users', async (req, res) => {
   try {
     const response = await axios.post(process.env.TOKEN_URL, new URLSearchParams({
