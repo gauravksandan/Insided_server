@@ -28,7 +28,7 @@ const getUsers = async (req, res) => {
   const access_token = await accessToken();
   try {
     // Fetch data from API using the access token
-    const apiResponse = await axios.get(`${process.env.BASE_URL}/users`, {
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/user`, {
       headers: {
         Authorization: `Bearer ${access_token}`
       }
