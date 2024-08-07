@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const routes = require("routes.js");
+const routes = require("routers.js");
 
 dotenv.config();
 
