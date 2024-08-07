@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 
-const getUsers = async(req, res) => {
+const getUsers = async (req, res) => {
   try {
     const response = await axios.post(process.env.TOKEN_URL, new URLSearchParams({
       grant_type: 'client_credentials',
@@ -31,7 +31,7 @@ const getUsers = async(req, res) => {
       details: error.response ? error.response.data : error.message 
     });
   }
-});
+};
 
 module.exports = {
  getUsers
