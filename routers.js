@@ -1,4 +1,5 @@
 const express = require("express");
 const router = (module.exports = express.Router());
-const { getUsers } = require("./getData");
-router.get("/users", getUsers);
+const { getUsers, getLeaderboardsByPoints } = require("./getData");
+router.get("/api/users", getUsers);
+router.get("/api/points", getLeaderboardsByPoints);
