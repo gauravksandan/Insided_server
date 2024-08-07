@@ -13,8 +13,9 @@ const accessToken = async (req, res)=>{
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
-
-    return  response.data;
+    console.log("response.data", response.data);
+    const access_token = response.data.access_token;
+    return  access_token;
   } catch (error) {
     console.error('Error details:', error.response ? error.response.data : error.message);
     res.status(500).json({ 
