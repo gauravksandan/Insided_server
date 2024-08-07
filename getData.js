@@ -13,7 +13,6 @@ const accessToken = async (req, res)=>{
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     });
-    console.log("response.data", response.data);
     const access_token = response.data.access_token;
     return  access_token;
   } catch (error) {
