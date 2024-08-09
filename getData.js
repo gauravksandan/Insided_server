@@ -64,7 +64,31 @@ const getLeaderboardsByPoints = async (req, res) => {
     });
   }
 }
+
+const getLeaderboardsperiod = async (req, res) => {
+  const access_token = await accessToken();
+  try {
+
+    // Fetch data from API using the access token
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/leaderboard/weekly`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+}
+
+
 module.exports = {
  getUsers,
- getLeaderboardsByPoints
+ getLeaderboardsByPoints,
+ getLeaderboardsperiod 
 }
