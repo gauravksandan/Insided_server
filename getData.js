@@ -27,6 +27,9 @@ const accessToken = async (req, res)=>{
 const getLogedInUser = async (req, res) => {
   const access_token = await accessToken();
   const userId = req.query.userid;
+  console.log("req",req);
+  console.log("user",req.query.userid);
+  console.log("typeoffuser",typeof(req.query.userid));
   try {
     // Fetch data from API using the access token
     const apiResponse = await axios.get(`${process.env.BASE_URL}/user/${userId}`, {
