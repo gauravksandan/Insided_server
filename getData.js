@@ -111,6 +111,6 @@ const getLeaderboardsperiod = async (req, res) => {
 module.exports = {
  getUsers,
  getLeaderboardsByPoints,
- getLeaderboardsperiod ,
-  getLogedInUser
+ getLeaderboardsperiod,
+ getLogedInUser
 }
