@@ -3,7 +3,7 @@ const router = (module.exports = express.Router());
 const { getUsers, getLeaderboardsByPoints,getLeaderboardsperiod } = require("./getData");
 router.get("/api/users", getUsers);
 router.get("/api/points", getLeaderboardsByPoints);
-router.get("/api/users/LogedInUser/", getLogedInUser);
+router.get("/api/users/logedInUser/", getLogedInUser);
 
 
 
