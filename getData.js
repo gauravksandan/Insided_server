@@ -25,12 +25,18 @@ const accessToken = async (req, res)=>{
 };
 
 const getLogedInUser = async (req, res) => {
-  const access_token = await accessToken();
-  const userId = req.query.userid;
-  console.log("req",req);
-  console.log("user",req.query.userid);
-  console.log("typeoffuser",typeof(req.query.userid));
   try {
+    const access_token = await accessToken(); // Ensure this is valid and returns a token
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    console.log("req", req);
+    console.log("user", userId);
+    console.log("typeoffuser", typeof userId);
+
     // Fetch data from API using the access token
     const apiResponse = await axios.get(`${process.env.BASE_URL}/user/${userId}`, {
       headers: {
@@ -47,6 +53,7 @@ const getLogedInUser = async (req, res) => {
     });
   }
 };
+
 const getUsers = async (req, res) => {
   const access_token = await accessToken();
   try {
