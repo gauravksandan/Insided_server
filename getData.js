@@ -23,6 +23,27 @@ const accessToken = async (req, res)=>{
     });
   }
 };
+
+const getLogedInUser = async (req, res) => {
+  const access_token = await accessToken();
+  const userId = req.query.userid;
+  try {
+    // Fetch data from API using the access token
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+};
 const getUsers = async (req, res) => {
   const access_token = await accessToken();
   try {
@@ -90,5 +111,6 @@ const getLeaderboardsperiod = async (req, res) => {
 module.exports = {
  getUsers,
  getLeaderboardsByPoints,
- getLeaderboardsperiod 
+ getLeaderboardsperiod ,
+  getLogedInUser
 }
