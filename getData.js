@@ -98,7 +98,7 @@ const getUsers = async (req, res) => {
 const getArticles = async (req, res) => {
   const access_token = await accessToken();
   const baseUrl = `${process.env.BASE_URL}/v2/articles`;
-  const pageSize = 100; // Set to the maximum allowed by the API
+  const pageSize = 100;
   let page = 1;
   let allArticles = [];
   let hasMore = true;
@@ -115,18 +115,16 @@ const getArticles = async (req, res) => {
         },
       });
 
+      console.log('API Response:', apiResponse.data); // Inspect the full API response
+
       const articles = apiResponse.data.articles;
 
-      // Ensure articles is defined and is an array before proceeding
-      if (Array.isArray(articles)) {
+      if (Array.isArray(articles) && articles.length > 0) {
         allArticles = allArticles.concat(articles);
-        
-        // Check if the current page returned the maximum number of articles
         hasMore = articles.length === pageSize;
       } else {
-        // If articles is undefined or not an array, stop the loop
         hasMore = false;
-        console.warn('Unexpected response format. Stopping further requests.');
+        console.warn('No more articles or unexpected response format.');
       }
 
       page++;
