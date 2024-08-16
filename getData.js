@@ -98,7 +98,7 @@ const getUsers = async (req, res) => {
 const getArticles = async (req, res) => {
   const access_token = await accessToken();
   const baseUrl = `${process.env.BASE_URL}/v2/articles`;
-  const pageSize = 100; // Set to the maximum allowed by the API
+  const pageSize = 10; // Set to the maximum allowed by the API
   let page = 1;
   let allArticles = [];
   let hasMore = true;
@@ -133,7 +133,6 @@ const getArticles = async (req, res) => {
     });
   }
 };
-
 
 const getCategoriesList = async (req, res) => {
   const access_token = await accessToken();
