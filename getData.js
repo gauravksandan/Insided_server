@@ -115,7 +115,8 @@ const getArticles = async (req, res) => {
           pageSize,
         },
       });
-
+      console.log(apiResponse.data); // Log the data to see its structure
+      
       const articles = apiResponse.data.articles; // Adjust if the key is different
       allArticles = allArticles.concat(articles);
 
