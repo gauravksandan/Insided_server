@@ -74,25 +74,66 @@ const getUsers = async (req, res) => {
   }
 };
 
+// const getArticles = async (req, res) => {
+//   const access_token = await accessToken();
+//   try {
+//     // Fetch data from API using the access token
+//     const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/articles`, {
+//       headers: {
+//         Authorization: `Bearer ${access_token}`
+//       }
+//     });
+
+//     res.json(apiResponse.data);
+//   } catch (error) {
+//     console.error('Error details:', error.response ? error.response.data : error.message);
+//     res.status(500).json({ 
+//       error: 'Authentication failed', 
+//       details: error.response ? error.response.data : error.message 
+//     });
+//   }
+// };
+
+
 const getArticles = async (req, res) => {
   const access_token = await accessToken();
-  try {
-    // Fetch data from API using the access token
-    const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/articles`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    });
+  const baseUrl = `${process.env.BASE_URL}/v2/articles`;
+  const pageSize = 100; // Set to the maximum allowed by the API
+  let page = 1;
+  let allArticles = [];
+  let hasMore = true;
 
-    res.json(apiResponse.data);
+  try {
+    while (hasMore) {
+      // Fetch data from API using the access token and paginated requests
+      const apiResponse = await axios.get(baseUrl, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        params: {
+          page,
+          pageSize,
+        },
+      });
+
+      const articles = apiResponse.data.articles; // Adjust if the key is different
+      allArticles = allArticles.concat(articles);
+
+      // Check if the current page returned the maximum number of articles (indicating there may be more)
+      hasMore = articles.length === pageSize;
+      page++;
+    }
+
+    res.json(allArticles);
   } catch (error) {
     console.error('Error details:', error.response ? error.response.data : error.message);
-    res.status(500).json({ 
-      error: 'Authentication failed', 
-      details: error.response ? error.response.data : error.message 
+    res.status(500).json({
+      error: 'Failed to fetch articles',
+      details: error.response ? error.response.data : error.message,
     });
   }
 };
+
 
 const getCategoriesList = async (req, res) => {
   const access_token = await accessToken();
