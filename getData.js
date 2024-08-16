@@ -94,6 +94,26 @@ const getArticles = async (req, res) => {
   }
 };
 
+const getCategoriesList = async (req, res) => {
+  const access_token = await accessToken();
+  try {
+    // Fetch data from API using the access token
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/categories`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+};
+
 const getLeaderboardsByPoints = async (req, res) => {
   const access_token = await accessToken();
   try {
@@ -142,5 +162,6 @@ module.exports = {
  getLeaderboardsByPoints,
  getLeaderboardsperiod,
  getLogedInUser,
- getArticles
+ getArticles,
+ getCategoriesList
 }
