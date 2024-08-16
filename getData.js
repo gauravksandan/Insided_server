@@ -98,14 +98,13 @@ const getUsers = async (req, res) => {
 const getArticles = async (req, res) => {
   const access_token = await accessToken();
   const baseUrl = `${process.env.BASE_URL}/v2/articles`;
-  const pageSize = 10; // Set to the maximum allowed by the API
+  const pageSize = 100; // Set to the maximum allowed by the API
   let page = 1;
   let allArticles = [];
   let hasMore = true;
 
   try {
     while (hasMore) {
-      // Fetch data from API using the access token and paginated requests
       const apiResponse = await axios.get(baseUrl, {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -115,19 +114,27 @@ const getArticles = async (req, res) => {
           pageSize,
         },
       });
-      console.log(apiResponse.data); // Log the data to see its structure
-      
-      const articles = apiResponse.data.articles; // Adjust if the key is different
-      allArticles = allArticles.concat(articles);
 
-      // Check if the current page returned the maximum number of articles (indicating there may be more)
-      hasMore = articles.length === pageSize;
+      const articles = apiResponse.data.articles;
+
+      // Ensure articles is defined and is an array before proceeding
+      if (Array.isArray(articles)) {
+        allArticles = allArticles.concat(articles);
+        
+        // Check if the current page returned the maximum number of articles
+        hasMore = articles.length === pageSize;
+      } else {
+        // If articles is undefined or not an array, stop the loop
+        hasMore = false;
+        console.warn('Unexpected response format. Stopping further requests.');
+      }
+
       page++;
     }
 
     res.json(allArticles);
   } catch (error) {
-    console.error('Error details:', error.response ? error.response.data : error.message);
+    console.error('Error fetching articles:', error.response ? error.response.data : error.message);
     res.status(500).json({
       error: 'Failed to fetch articles',
       details: error.response ? error.response.data : error.message,
