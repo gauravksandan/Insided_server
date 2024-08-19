@@ -166,9 +166,9 @@ const getArticlesv2 = async (req, res) => {
     };
     
     // Fetch data from API using the access token
-    const articles = axios.get(`${process.env.BASE_URL}/v2/articles`, headers);
-    const conversations = axios.get(`${process.env.BASE_URL}/v2/conversations`, headers);
-    const questions = axios.get(`${process.env.BASE_URL}/v2/questions`, headers);
+    const articles = axios.get(`${process.env.BASE_URL}/v2/articles?&pageSize=100`, headers);
+    const conversations = axios.get(`${process.env.BASE_URL}/v2/conversations?&pageSize=100`, headers);
+    const questions = axios.get(`${process.env.BASE_URL}/v2/questions?&pageSize=100`, headers);
 
     // Wait for all promises to settle
     const results = await Promise.allSettled([articles, conversations, questions]);
