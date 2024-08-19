@@ -6,5 +6,5 @@ router.get("/api/points", getLeaderboardsByPoints);
 router.get("/api/articles", getArticles);
 router.get("/api/users/:id", getLogedInUser);
 router.get("/api/categories", getCategoriesList);
-router.get("/api/getArticlesv2", getArticlesv2);
+router.get("/api/articlesv2", getArticlesv2);
 
