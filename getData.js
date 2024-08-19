@@ -170,8 +170,11 @@ const getArticlesv2 = async (req, res) => {
     const questions = await axios.get(`${process.env.BASE_URL}/v2/questions`,  headers);
 
     Promise.allSettled([articles, conversations, questions]).then(res=> {
-      console.log(res,'------res-------');
-      
+      res.json({
+        articles: res[0].value.data,
+        conversations: res[1].value.data,
+        questions: res[2].value.data,
+      });
     })
   } catch (error) {
     console.error('Error details:', error.response ? error.response.data : error.message);
