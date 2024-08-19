@@ -156,6 +156,31 @@ const getLeaderboardsperiod = async (req, res) => {
   }
 }
 
+const getArticlesv2 = async (req, res) => {
+  const access_token = await accessToken();
+  try {
+    let headers = {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    }
+    // Fetch data from API using the access token
+    const articles = await axios.get(`${process.env.BASE_URL}/v2/articles`, headers);
+    const conversations = await axios.get(`${process.env.BASE_URL}/v2/conversations`,  headers);
+    const questions = await axios.get(`${process.env.BASE_URL}/v2/questions`,  headers);
+
+    Promise.allSettled([articles, conversations, questions]).then(res=> {
+      console.log(res,'------res-------');
+      
+    })
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+};
 
 module.exports = {
  getUsers,
@@ -163,5 +188,6 @@ module.exports = {
  getLeaderboardsperiod,
  getLogedInUser,
  getArticles,
- getCategoriesList
+ getCategoriesList,
+ getArticlesv2
 }
