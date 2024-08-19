@@ -163,19 +163,26 @@ const getArticlesv2 = async (req, res) => {
       headers: {
         Authorization: `Bearer ${access_token}`
       }
-    }
+    };
+    
     // Fetch data from API using the access token
-    const articles = await axios.get(`${process.env.BASE_URL}/v2/articles`, headers);
-    const conversations = await axios.get(`${process.env.BASE_URL}/v2/conversations`,  headers);
-    const questions = await axios.get(`${process.env.BASE_URL}/v2/questions`,  headers);
+    const articles = axios.get(`${process.env.BASE_URL}/v2/articles`, headers);
+    const conversations = axios.get(`${process.env.BASE_URL}/v2/conversations`, headers);
+    const questions = axios.get(`${process.env.BASE_URL}/v2/questions`, headers);
 
-    Promise.allSettled([articles, conversations, questions]).then(res=> {
-      res.json({
-        articles: res[0].value.data,
-        conversations: res[1].value.data,
-        questions: res[2].value.data,
-      });
-    })
+    // Wait for all promises to settle
+    const results = await Promise.allSettled([articles, conversations, questions]);
+
+    // Structure the results and handle errors
+    const responseData = {
+      articles: results[0].status === 'fulfilled' ? results[0].value.data : null,
+      conversations: results[1].status === 'fulfilled' ? results[1].value.data : null,
+      questions: results[2].status === 'fulfilled' ? results[2].value.data : null,
+    };
+
+    // Send the response as JSON
+    res.json(responseData);
+
   } catch (error) {
     console.error('Error details:', error.response ? error.response.data : error.message);
     res.status(500).json({ 
@@ -184,6 +191,7 @@ const getArticlesv2 = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
  getUsers,
