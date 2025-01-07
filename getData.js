@@ -193,6 +193,29 @@ const getArticlesv2 = async (req, res) => {
 };
 
 
+// new code for badges awards
+
+const giveBadge = async (req, res) => {
+  const access_token = await accessToken();
+  let config = {
+    method: 'PUT',
+    url: `https://api2-eu-west-1.insided.com/user/${userId}/badge/${badgeId}`,
+    headers: { 
+      'Authorization': `Bearer ${access_token}`
+    }
+  };
+  
+  axios.request(config)
+  .then((response) => {
+    console.log(">>>>>>>>>>>>>>", JSON.stringify(response.data));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+};
+
+
+
 module.exports = {
  getUsers,
  getLeaderboardsByPoints,
@@ -200,5 +223,6 @@ module.exports = {
  getLogedInUser,
  getArticles,
  getCategoriesList,
- getArticlesv2
+ getArticlesv2,
+ giveBadge 
 }
