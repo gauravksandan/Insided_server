@@ -201,7 +201,7 @@ const giveBadge = async (req, res) => {
   const access_token = await accessToken(); 
   let config = {
     method: 'PUT',
-    url: `https://api2-eu-west-1.insided.com/user/${userId}/badge/${badgeId}`,
+    url: `${process.env.BASE_URL}/user/${userId}/badge/${badgeId}`,
     headers: { 
       'Authorization': `Bearer ${access_token}`
     }
@@ -209,8 +209,8 @@ const giveBadge = async (req, res) => {
   
   axios.request(config)
   .then((response) => {
+    console.log("asfds", );
     res.send(response.data);
-
     console.log("Response Data: ", JSON.stringify(response.data));
   })
   .catch((error) => {
