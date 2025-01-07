@@ -196,7 +196,9 @@ const getArticlesv2 = async (req, res) => {
 // new code for badges awards
 
 const giveBadge = async (req, res) => {
-  const access_token = await accessToken();
+  const userId = req.params.userId;
+  const badgeId = req.params.badgeId;
+  const access_token = await accessToken(); 
   let config = {
     method: 'PUT',
     url: `https://api2-eu-west-1.insided.com/user/${userId}/badge/${badgeId}`,
