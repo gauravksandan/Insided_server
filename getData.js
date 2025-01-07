@@ -209,10 +209,13 @@ const giveBadge = async (req, res) => {
   
   axios.request(config)
   .then((response) => {
-    console.log(">>>>>>>>>>>>>>", JSON.stringify(response.data));
+    res.send(response.data);
+
+    console.log("Response Data: ", JSON.stringify(response.data));
   })
   .catch((error) => {
-    console.log(error);
+    console.error("Error fetching data: ", error.message);
+    res.status(500).send({ error: "Failed to fetch data." });
   });
 };
 
