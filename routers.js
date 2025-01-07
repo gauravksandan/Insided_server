@@ -7,4 +7,4 @@ router.get("/api/articles", getArticles);
 router.get("/api/users/:id", getLogedInUser);
 router.get("/api/categories", getCategoriesList);
 router.get("/api/articlesv2", getArticlesv2);
-router.put('/user/:userId/badge/:badgeId', giveBadge);
+router.put('/api/user/:userId/badge/:badgeId', giveBadge);
