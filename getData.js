@@ -229,13 +229,68 @@ const getCommunityBadges = async (req, res) => {
         Authorization: `Bearer ${access_token}`
       }
     });
-
-    res.json(apiResponse.data);
+    return apiResponse.data;
+    // res.json(apiResponse.data);
   } catch (error) {
     console.error('Error details:', error.response ? error.response.data : error.message);
     res.status(500).json({ 
       error: 'Authentication failed', 
       details: error.response ? error.response.data : error.message 
+    });
+  }
+};
+
+const getUserBadges = async (req, res) => {
+  try {
+    const access_token = await accessToken();
+    const userId = req.params.id;
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    // Fetch user data
+    const userResponse = await axios.get(`${process.env.BASE_URL}/user/${userId}`, {
+      headers: { Authorization: `Bearer ${access_token}` }
+    });
+
+    const userData = userResponse.data;
+
+    // Fetch community badges
+    const badgeResponse = await axios.get(`${process.env.BASE_URL}/gamification/badges`, {
+      headers: { Authorization: `Bearer ${access_token}` }
+    });
+
+    const badgeList = badgeResponse.data;
+
+    // Merge badge images into user badges
+    if (
+      userData &&
+      userData._related &&
+      Array.isArray(userData._related.badges) &&
+      badgeList?.results?.length
+    ) {
+      const badgeMap = new Map();
+
+      badgeList.results.forEach(badge => {
+        badgeMap.set(String(badge.id), badge.image);
+      });
+
+      userData._related.badges = userData._related.badges.map(userBadge => {
+        const badgeId = String(userBadge.id);
+        return {
+          ...userBadge,
+          image: badgeMap.get(badgeId) || null
+        };
+      });
+    }
+
+    res.json(userData);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({
+      error: 'Failed to get user with badge images',
+      details: error.response ? error.response.data : error.message
     });
   }
 };
@@ -250,5 +305,6 @@ module.exports = {
  getCategoriesList,
  getArticlesv2,
  giveBadge,
- getCommunityBadges
+ getCommunityBadges,
+ getUserBadges
 }

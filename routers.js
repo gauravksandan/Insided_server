@@ -1,6 +1,17 @@
 const express = require("express");
 const router = (module.exports = express.Router());
-const { getUsers, getLeaderboardsByPoints,getLeaderboardsperiod,getLogedInUser,getArticles,getCategoriesList, getArticlesv2, giveBadge,getCommunityBadges } = require("./getData");
+const {
+  getUsers,
+  getLeaderboardsByPoints,
+  getLeaderboardsperiod,
+  getLogedInUser,
+  getArticles,
+  getCategoriesList,
+  getArticlesv2,
+  giveBadge,
+  getCommunityBadges,
+  getUserBadges
+} = require("./getData");
 router.get("/api/users", getUsers);
 router.get("/api/points", getLeaderboardsByPoints);
 router.get("/api/articles", getArticles);
@@ -9,3 +20,4 @@ router.get("/api/categories", getCategoriesList);
 router.get("/api/articlesv2", getArticlesv2);
 router.get('/api/user/:userId/badge/:badgeId', giveBadge);
 router.get('/gamification/badges' ,getCommunityBadges);
+router.get('/user/:id/badges', getUserBadges);
