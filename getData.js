@@ -282,7 +282,7 @@ const getTopics = async (req, res) => {
     
     // These automatically come from the query string
     const page = req.query.page || 1;
-    const pageSize = req.query.pageSize || 200;
+    const pageSize = req.query.pageSize || 500;
     
     const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/topics`, {
       headers: {
