@@ -201,7 +201,7 @@ const giveBadge = async (req, res) => {
   const access_token = await accessToken(); 
   let config = {
     method: 'PUT',
-    url: `${process.env.BASE_URL}/user/${userId}/badge/${badgeId}`,
+    url: `https://api2-eu-west-1.insided.com/user/${userId}/badge/${badgeId}`,
     headers: { 
       'Authorization': `Bearer ${access_token}`
     }
@@ -220,6 +220,27 @@ const giveBadge = async (req, res) => {
 };
 
 
+const getCommunityBadges = async (req, res) => {
+  const access_token = await accessToken();
+  try {
+    // Fetch data from API using the access token
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/gamification/badges`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+};
+
+
 module.exports = {
  getUsers,
  getLeaderboardsByPoints,
@@ -228,5 +249,6 @@ module.exports = {
  getArticles,
  getCategoriesList,
  getArticlesv2,
- giveBadge
+ giveBadge,
+ getCommunityBadges
 }
