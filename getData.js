@@ -277,22 +277,26 @@ const getUserBadges = async (req, res) => {
 
 
 const getTopics = async (req, res) => {
-  const access_token = await accessToken();
   try {
-    // Fetch data from API using the access token
-    const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/topics?page=1&pageSize=200`, {
+    const access_token = await accessToken();
+    
+    // These automatically come from the query string
+    const page = req.query.page || 1;
+    const pageSize = req.query.pageSize || 200;
+    
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/topics`, {
       headers: {
         Authorization: `Bearer ${access_token}`
+      },
+      params: {
+        page: page,
+        pageSize: pageSize
       }
     });
 
     res.json(apiResponse.data);
   } catch (error) {
-    console.error('Error details:', error.response ? error.response.data : error.message);
-    res.status(500).json({ 
-      error: 'Authentication failed', 
-      details: error.response ? error.response.data : error.message 
-    });
+    // ... error handling
   }
 };
 

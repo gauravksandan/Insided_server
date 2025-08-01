@@ -20,4 +20,4 @@ router.get("/api/categories", getCategoriesList);
 router.get("/api/articlesv2", getArticlesv2);
 router.get('/api/user/:userId/badge/:badgeId', giveBadge);
 router.get('/user/:id/badges', getUserBadges);
-router.get("/v2/topics?page=1&pageSize=200", getTopics);
+router.get("/v2/topics", getTopics);
