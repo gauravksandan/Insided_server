@@ -220,26 +220,6 @@ const giveBadge = async (req, res) => {
 };
 
 
-const getCommunityBadges = async (req, res) => {
-  const access_token = await accessToken();
-  try {
-    // Fetch data from API using the access token
-    const apiResponse = await axios.get(`${process.env.BASE_URL}/gamification/badges`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    });
-    return apiResponse.data;
-    // res.json(apiResponse.data);
-  } catch (error) {
-    console.error('Error details:', error.response ? error.response.data : error.message);
-    res.status(500).json({ 
-      error: 'Authentication failed', 
-      details: error.response ? error.response.data : error.message 
-    });
-  }
-};
-
 const getUserBadges = async (req, res) => {
   try {
     const access_token = await accessToken();
@@ -296,6 +276,28 @@ const getUserBadges = async (req, res) => {
 };
 
 
+const getTopics = async (req, res) => {
+  const access_token = await accessToken();
+  try {
+    // Fetch data from API using the access token
+    const apiResponse = await axios.get(`${process.env.BASE_URL}/v2/topics?page=1&pageSize=200`, {
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+
+    res.json(apiResponse.data);
+  } catch (error) {
+    console.error('Error details:', error.response ? error.response.data : error.message);
+    res.status(500).json({ 
+      error: 'Authentication failed', 
+      details: error.response ? error.response.data : error.message 
+    });
+  }
+};
+
+
+
 module.exports = {
  getUsers,
  getLeaderboardsByPoints,
@@ -305,6 +307,6 @@ module.exports = {
  getCategoriesList,
  getArticlesv2,
  giveBadge,
- getCommunityBadges,
- getUserBadges
+ getUserBadges,
+ getTopics
 }

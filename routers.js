@@ -9,8 +9,8 @@ const {
   getCategoriesList,
   getArticlesv2,
   giveBadge,
-  getCommunityBadges,
-  getUserBadges
+  getUserBadges,
+  getTopics
 } = require("./getData");
 router.get("/api/users", getUsers);
 router.get("/api/points", getLeaderboardsByPoints);
@@ -19,5 +19,5 @@ router.get("/api/users/:id", getLogedInUser);
 router.get("/api/categories", getCategoriesList);
 router.get("/api/articlesv2", getArticlesv2);
 router.get('/api/user/:userId/badge/:badgeId', giveBadge);
-router.get('/gamification/badges' ,getCommunityBadges);
 router.get('/user/:id/badges', getUserBadges);
+router.get("/v2/topics?page=1&pageSize=200", getTopics);
